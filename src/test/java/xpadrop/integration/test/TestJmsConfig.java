@@ -27,15 +27,15 @@ public class TestJmsConfig {
 
 	@Test
 	public void testReceiving() throws InterruptedException, RemoteException {
-		// TicketOrder order = new TicketOrder(1, 5, new Date());
-		// //Sends the message to the jmsTemplate's default destination
-		// producer.convertAndSendMessage(order);
-		//
-		// Thread.sleep(2000);
-		//
-		// TicketOrder receivedOrder = consumer.receive();
-		// assertNotNull(receivedOrder);
-		// assertEquals(1, receivedOrder.getFilmId());
-		// assertEquals(5, receivedOrder.getQuantity());
+		 TicketOrder order = new TicketOrder(1, 5, new Date());
+		 //Sends the message to the jmsTemplate's default destination
+		 producer.convertAndSendMessage(order);
+		
+		 Thread.sleep(2000);
+		
+		 TicketOrder receivedOrder = consumer.receive();
+		 assertNotNull(receivedOrder);
+		 assertEquals(1, receivedOrder.getFilmId());
+		 assertEquals(5, receivedOrder.getQuantity());
 	}
 }
