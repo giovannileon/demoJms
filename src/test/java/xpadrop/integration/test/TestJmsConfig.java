@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import xpadro.spring.integration.OrderRepository;
+import xpadro.spring.integration.TicketConfirmation;
 import xpadro.spring.integration.consumer.SyncConsumer;
 import xpadro.spring.integration.message.TicketOrder;
 import xpadro.spring.integration.producer.JmsProducer;
@@ -19,23 +21,40 @@ import xpadro.spring.integration.producer.JmsProducer;
 @ContextConfiguration({ "classpath:xpadro/spring/integration/test/config/applicationContext.xml" })
 @RunWith(SpringJUnit4ClassRunner.class)
 public class TestJmsConfig {
-	@Autowired
-	private JmsProducer producer;
+   @Autowired
+   private JmsProducer producer;
 
-	@Autowired
-	private SyncConsumer consumer;
+   @Autowired
+   private SyncConsumer consumer;
 
-	@Test
-	public void testReceiving() throws InterruptedException, RemoteException {
-		 TicketOrder order = new TicketOrder(1, 5, new Date());
-		 //Sends the message to the jmsTemplate's default destination
-		 producer.convertAndSendMessage(order);
-		
-		 Thread.sleep(2000);
-		
-		 TicketOrder receivedOrder = consumer.receive();
-		 assertNotNull(receivedOrder);
-		 assertEquals(1, receivedOrder.getFilmId());
-		 assertEquals(5, receivedOrder.getQuantity());
-	}
+   @Autowired
+   private OrderRepository repository;
+
+//	@Test
+//	public void testReceiving() throws InterruptedException, RemoteException {
+//		 TicketOrder order = new TicketOrder(1, 5, new Date());
+//		 //Sends the message to the jmsTemplate's default destination
+//		 producer.convertAndSendMessage(order);
+//		
+//		 Thread.sleep(2000);
+//		
+//		 TicketOrder receivedOrder = consumer.receive();
+//		 assertNotNull(receivedOrder);
+//		 assertEquals(1, receivedOrder.getFilmId());
+//		 assertEquals(5, receivedOrder.getQuantity());
+//	}
+
+   @Test
+   public void testSendToIntegration() throws InterruptedException, RemoteException {
+      TicketOrder order = new TicketOrder(1, 5, new Date());
+      // Sends the message to the jmsTemplate's default destination
+      producer.convertAndSendMessage("int.sync.queue", order);
+
+      Thread.sleep(4000);
+
+      assertEquals(1, repository.getConfirmations().size());
+      assertNotNull(repository.getConfirmations().get(0));
+      TicketConfirmation conf = repository.getConfirmations().get(0);
+      assertEquals("123", conf.getId());
+   }
 }

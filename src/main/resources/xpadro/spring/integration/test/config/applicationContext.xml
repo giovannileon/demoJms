@@ -7,13 +7,24 @@
 
 
 	<bean id="consumer" class="xpadro.spring.integration.consumer.SyncConsumer" />
+	
+
 	<bean id="producer" class="xpadro.spring.integration.producer.JmsProducer" />
+
+	<!-- Infrastructure -->
+	<!-- Connection factory and jmsTemplate configuration -->
+	<!-- as seen in the second section -->
+
+	<!-- Destinations -->
+	<bean id="toIntQueue" class="org.apache.activemq.command.ActiveMQQueue">
+		<constructor-arg value="int.sync.queue" />
+	</bean>
 
 
 
 	<!-- Infrastructure -->
 	<bean id="connectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
-		<property name="brokerURL" value="tcp://localhost:61616" />
+		<property name="brokerURL" value="tcp://localhost:6161" />
 	</bean>
 
 	<bean id="cachingConnectionFactory"

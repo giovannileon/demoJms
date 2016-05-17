@@ -12,11 +12,13 @@ public class TicketOrder implements Serializable{
 	final private int filmId;
 	final private int quantity;
 	final private Date sessionDate;
+	final private Date orderDate;
 
 	public TicketOrder(int filmId, int quantity, Date sessionDate) {
 		this.filmId = filmId;
 		this.quantity = quantity;
 		this.sessionDate = sessionDate;
+		this.orderDate = sessionDate;
 	}
 
 	public int getFilmId() {
@@ -30,5 +32,10 @@ public class TicketOrder implements Serializable{
 	public Date getSessionDate() {
 		return sessionDate;
 	}
+
+   public Date getOrderDate() {
+      // TODO Auto-generated method stub
+      return orderDate;
+   }
 
 }
