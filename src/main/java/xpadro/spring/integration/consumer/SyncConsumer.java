@@ -12,4 +12,5 @@ public class SyncConsumer {
     public TicketOrder receive() {
         return (TicketOrder) jmsTemplate.receiveAndConvert("test.sync.queue");
     }
+    
 }
